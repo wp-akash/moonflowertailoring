@@ -1852,9 +1852,9 @@ input::-moz-focus-inner {
   display: inline-block;
   font-family: "Gothic A1", sans-serif;
   font-weight: 400;
-  font-size: 1.4rem;
+  font-size: 2rem;
   line-height: 2rem;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   letter-spacing: .3em;
   color: #8dc63f;
   padding-left: .6rem;
@@ -2491,7 +2491,7 @@ html.no-csstransitions .intro-content__bottom {
   }
 
   .intro-content__text h3 {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
   }
 
   .intro-content__text h1 {
