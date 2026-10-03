@@ -23,7 +23,7 @@
     <!-- script
     ================================================== -->
     <script src="js/modernizr.js"></script>
-    <script defer src="js/fontawesome/all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- favicons
     ================================================== -->
@@ -32,6 +32,120 @@
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="manifest" href="site.webmanifest">
 
+    <style>
+        a:hover {
+            text-decoration: underline !important;
+        }
+
+        p a:hover {
+            color: #ffffff;
+            text-decoration: underline !important;
+        }
+
+        .icon-circle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-right: 15px;
+            font-size: 1.8rem;
+        }
+
+        strong {
+            font-weight: 400;
+            margin-left: 5px;
+            display: block;
+            width: 100%;
+        }
+
+        .site-logo-img {
+            width: 100%;
+            max-width: 150px;
+            height: auto !important;
+            object-fit: contain;
+            display: block;
+            /* transform: translateY(20px); */
+            border-radius: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .site-logo-img {
+                max-width: 100px;
+                /* transform: translateY(10px); */
+                border-radius: 30px;
+            }
+        }
+
+        .intro-logo {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .intro-content__text {
+            text-align: center;
+        }
+
+        .s-intro {
+            height: auto !important;
+            min-height: 100vh;
+            overflow: auto !important;
+            padding-bottom: 50px;
+        }
+
+        .intro-content__contact {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px 40px;
+            max-width: 1000px;
+            margin: 40px auto 0 auto;
+            text-align: left;
+        }
+
+        .intro-content__contact p {
+            display: flex;
+            align-items: center;
+        }
+
+        .intro-content__contact p .icon-circle {
+            flex-shrink: 0;
+        }
+
+        .s-intro {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .intro-content__contact {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                /* padding: 0 20px; */
+                margin-top: 20px;
+            }
+
+            .intro-content__contact p {
+                font-size: 1.5rem;
+            }
+
+            .icon-circle {
+                width: 35px;
+                height: 35px;
+                font-size: 1.4rem;
+                margin-right: 12px;
+            }
+
+            .intro-logo {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
 </head>
 
 <body id="top">
@@ -48,21 +162,17 @@
 
     <!-- site header
     ================================================== -->
-    <header class="s-header">
+    <header class="">
 
-        <div class="header-logo">
-            <a class="site-logo" href="https://moonflowertailoring.ae">
-                moonflowertailoring.ae
-            </a>
-        </div>
 
-        <div class="header-email">
+
+        <!-- <div class="header-email">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                 <path
                     d="M0 12l11 3.1 7-8.1-8.156 5.672-4.312-1.202 15.362-7.68-3.974 14.57-3.75-3.339-2.17 2.925v-.769l-2-.56v7.383l4.473-6.031 4.527 4.031 6-22z" />
             </svg>
-            <a href="mailto:info@moonflowertailoring.ae">info@moonflowertailoring.ae</a>
-        </div>
+            <a href="mailto:moonflower1234@gmail.com">moonflower1234@gmail.com</a>
+        </div> -->
 
     </header> <!-- end s-header -->
 
@@ -79,23 +189,61 @@
         <div class="row intro-content">
 
             <div class="column">
-
+                <div class="intro-logo">
+                    <a class="site-logo" href="http://www.moonflowertailoring.com">
+                        <img src="images/moonflowertailoring.png" alt="Moon Flower Tailoring Logo"
+                            class="site-logo-img">
+                    </a>
+                </div>
                 <div class="intro-content__text">
 
-                    <h3>
-                        Coming Soon
+                    <h1>
+                        Moon Flower Tailoring
+                    </h1>
+
+                    <h3 style="margin-top: 20px;">
+                        Website Launching Soon
                     </h3>
 
-                    <h1>
+                    <!-- <h1>
                         Get ready everyone. <br>
                         We are currently <br>
                         working on a super <br>
                         awesome website.
-                    </h1>
+                    </h1> -->
 
                 </div> <!-- end intro-content__text -->
 
-
+                <div class="intro-content__contact" style="font-size: 1.8rem; line-height: 1.6; color: #ffffff;">
+                    <p style="margin-bottom: 15px;"><i class="fas fa-mobile-alt icon-circle"
+                            style="color: #ffffff;"></i> WhatsApp/Mobile: <a href="https://wa.me/971529382761"
+                            target="_blank"><strong> +971 52 938 2761</strong></a></p>
+                    <p style="margin-bottom: 15px;"><i class="fas fa-phone icon-circle" style="color: #ffffff;"></i>
+                        Phone:
+                        <strong> <a href="tel:+97143244767" target="_blank"><strong> +971 4 324
+                                    4767</strong></a></strong>
+                    </p>
+                    <p style="margin-bottom: 15px;"><i class="fas fa-map-marker-alt icon-circle"
+                            style="color: #ffffff;"></i> <strong>Address: Next to Regal, Champion Textiles
+                            Building,
+                            Satwa, Dubai - U.A.E.</strong></p>
+                    <p style="margin-bottom: 15px;"><i class="fas fa-envelope icon-circle" style="color: #ffffff;"></i>
+                        Email: <a href="mailto:moonflower1234@gmail.com"><strong>moonflower1234@gmail.com</strong></a>
+                    </p>
+                    <!-- <p style="margin-bottom: 15px;"><i class="fas fa-globe icon-circle" style="color: #ffffff;"></i>
+                        Website: <a href="http://www.moonflowertailoring.com"
+                            target="_blank"><strong>www.moonflowertailoring.com</strong></a></p> -->
+                    <p style="margin-bottom: 15px;"><i class="fab fa-instagram icon-circle" style="color: #ffffff;"></i>
+                        Instagram:
+                        <a href="https://www.instagram.com/moonflowertailoring/"
+                            target="_blank"><strong>moonflowertailoring</strong></a>
+                    </p>
+                    <p style="margin-bottom: 15px;"><i class="fab fa-facebook-f icon-circle"
+                            style="color: #ffffff;"></i> Facebook:
+                        <a href="https://www.facebook.com/moonflowertailoring/"
+                            target="_blank"><strong>moonflowertailoring</strong></a>
+                    </p>
+                </div>
 
             </div> <!-- end column -->
 
