@@ -14,6 +14,9 @@
     ================================================== -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- hide animated content until GSAP reveals it (no flash of text) -->
+    <script>document.documentElement.classList.add('anim');</script>
+
     <!-- CSS
     ================================================== -->
     <link rel="stylesheet" href="css/base.css">
@@ -33,33 +36,75 @@
     <link rel="manifest" href="site.webmanifest">
 
     <style>
-        a:hover {
-            text-decoration: underline !important;
+        :root {
+            /* accent = same green as "Website Launching Soon" — change here to recolor everything */
+            --accent: #7cb342;
+            --text: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.65);
+            --line: rgba(255, 255, 255, 0.18);
         }
 
-        p a:hover {
-            color: #ffffff;
-            text-decoration: underline !important;
+        /* ===== VIDEO BACKGROUND + OVERLAY ===== */
+        body {
+            background-color: #000;
         }
 
-        .icon-circle {
-            display: inline-flex;
-            align-items: center;
+        .video-bg-wrap {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .intro-video-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+
+        .video-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.75) 100%);
+            z-index: 1;
+        }
+
+        .s-intro {
+            position: relative;
+            z-index: 2;
+            background: transparent !important;
+            background-image: none !important;
+            display: flex;
             justify-content: center;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            margin-right: 15px;
-            font-size: 1.8rem;
+            align-items: center;
+            height: auto !important;
+            min-height: 100vh;
+            overflow: auto !important;
+            padding: 50px 0;
         }
 
-        strong {
-            font-weight: 400;
-            margin-left: 5px;
-            display: block;
+        .intro-content {
+            position: relative;
+            z-index: 3;
             width: 100%;
+        }
+
+        .intro-content .column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* ===== LOGO + TITLE ===== */
+        .intro-logo {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 24px;
         }
 
         .site-logo-img {
@@ -68,84 +113,468 @@
             height: auto !important;
             object-fit: contain;
             display: block;
-            /* transform: translateY(20px); */
             border-radius: 30px;
-        }
-
-        @media (max-width: 768px) {
-            .site-logo-img {
-                max-width: 100px;
-                /* transform: translateY(10px); */
-                border-radius: 30px;
-            }
-        }
-
-        .intro-logo {
-            display: flex;
-            justify-content: center;
-            width: 100%;
-            margin-bottom: 20px;
         }
 
         .intro-content__text {
             text-align: center;
+            width: 100%;
         }
 
-        .s-intro {
-            height: auto !important;
-            min-height: 100vh;
-            overflow: auto !important;
-            padding-bottom: 50px;
+        .intro-content__text h1 {
+            color: var(--text);
+            margin: 0 auto;
         }
 
+        .intro-content__text h3 {
+            color: var(--accent);
+            margin-top: 10px;
+        }
+
+        /* ===== CONTACT GRID ===== */
         .intro-content__contact {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px 40px;
-            max-width: 1000px;
-            margin: 40px auto 0 auto;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 28px 48px;
+            width: 100%;
+            max-width: 860px;
+            margin: 44px auto 0;
+            padding-top: 36px;
+            border-top: 1px solid var(--line);
             text-align: left;
         }
 
-        .intro-content__contact p {
+        .contact-item {
             display: flex;
             align-items: center;
+            gap: 16px;
+            margin: 0;
         }
 
-        .intro-content__contact p .icon-circle {
+        .icon-circle {
             flex-shrink: 0;
-        }
-
-        .s-intro {
-            display: flex;
-            justify-content: center;
+            display: inline-flex;
             align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--line);
+            color: var(--accent);
+            font-size: 1.8rem;
+            transition: background-color .25s, color .25s, border-color .25s;
         }
 
+        .contact-item:hover .icon-circle {
+            background-color: var(--accent);
+            border-color: var(--accent);
+            color: #0b1410;
+        }
 
+        .contact-text {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            line-height: 1.4;
+        }
 
+        .contact-label {
+            font-size: 1.2rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            transition: color .3s;
+        }
+
+        .contact-item:hover .contact-label {
+            color: var(--accent);
+        }
+
+        .contact-value,
+        .contact-value:visited {
+            font-size: 1.7rem;
+            color: var(--text) !important;
+            text-decoration: none;
+            overflow-wrap: anywhere;
+        }
+
+        a.contact-value:hover,
+        a.contact-value:focus {
+            color: var(--accent) !important;
+            text-decoration: underline !important;
+        }
+
+        /* ===================================================
+           GSAP TEXT SPLITTING
+        =================================================== */
+        .split-word {
+            display: inline-block;
+            white-space: nowrap;
+            perspective: 600px;
+        }
+
+        .split-char {
+            display: inline-block;
+            will-change: transform, opacity, filter;
+        }
+
+        /* while the title is split into letters, show plain white text;
+           the shimmer comes back once the entrance is done */
+        .intro-content__text h1.is-splitting {
+            background: none !important;
+            -webkit-text-fill-color: var(--text) !important;
+            animation: none !important;
+        }
+
+        /* hidden until GSAP reveals (only when JS + GSAP are running) */
+        html.anim .intro-logo,
+        html.anim .intro-content__text,
+        html.anim .contact-item {
+            visibility: hidden;
+        }
+
+        /* ===================================================
+           INFINITE CSS ANIMATIONS
+        =================================================== */
+
+        /* 1. Slow cinematic zoom on the background video */
+        .intro-video-bg {
+            animation: kenBurns 24s ease-in-out infinite alternate;
+        }
+
+        @keyframes kenBurns {
+            from {
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            to {
+                transform: translate(-50%, -50%) scale(1.12);
+            }
+        }
+
+        /* 2. Floating logo with a glowing, rotating ring */
+        .intro-logo .site-logo {
+            position: relative;
+            display: inline-block;
+            animation: floatY 5s ease-in-out infinite;
+        }
+
+        .intro-logo .site-logo::before {
+            content: "";
+            position: absolute;
+            inset: -10px;
+            border-radius: 38px;
+            background: conic-gradient(from 0deg, transparent 0deg, var(--accent) 90deg, transparent 180deg, rgba(255, 255, 255, .6) 270deg, transparent 360deg);
+            filter: blur(6px);
+            opacity: .75;
+            z-index: -1;
+            animation: spin 6s linear infinite;
+        }
+
+        .intro-logo .site-logo::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 30px;
+            box-shadow: 0 0 0 0 rgba(124, 179, 66, .5);
+            animation: pulseRing 3s ease-out infinite;
+        }
+
+        @keyframes floatY {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-12px);
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes pulseRing {
+            0% {
+                box-shadow: 0 0 0 0 rgba(124, 179, 66, .45);
+            }
+
+            70% {
+                box-shadow: 0 0 0 22px rgba(124, 179, 66, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(124, 179, 66, 0);
+            }
+        }
+
+        /* 3. Shimmering light sweep across the title */
+        .intro-content__text h1 {
+            background: linear-gradient(110deg, #ffffff 0%, #ffffff 40%, var(--accent) 50%, #ffffff 60%, #ffffff 100%);
+            background-size: 250% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 6s linear infinite;
+        }
+
+        @keyframes shimmer {
+            from {
+                background-position: 100% 0;
+            }
+
+            to {
+                background-position: -150% 0;
+            }
+        }
+
+        /* 4. "Launching Soon" breathing glow + bouncing dots */
+        .intro-content__text h3 {
+            animation: breathe 3s ease-in-out infinite;
+        }
+
+        .loading-dots span {
+            display: inline-block;
+            animation: dotBounce 1.4s ease-in-out infinite;
+        }
+
+        .loading-dots span:nth-child(2) {
+            animation-delay: .2s;
+        }
+
+        .loading-dots span:nth-child(3) {
+            animation-delay: .4s;
+        }
+
+        @keyframes breathe {
+
+            0%,
+            100% {
+                opacity: .75;
+                text-shadow: 0 0 0 rgba(124, 179, 66, 0);
+            }
+
+            50% {
+                opacity: 1;
+                text-shadow: 0 0 14px rgba(124, 179, 66, .6);
+            }
+        }
+
+        @keyframes dotBounce {
+
+            0%,
+            80%,
+            100% {
+                transform: translateY(0);
+                opacity: .4;
+            }
+
+            40% {
+                transform: translateY(-6px);
+                opacity: 1;
+            }
+        }
+
+        /* 5. Contact icons glow in a wave forever */
+        .icon-circle {
+            animation: iconGlow 6s ease-in-out infinite;
+        }
+
+        .contact-item:nth-child(1) .icon-circle {
+            animation-delay: 0s;
+        }
+
+        .contact-item:nth-child(2) .icon-circle {
+            animation-delay: 1s;
+        }
+
+        .contact-item:nth-child(3) .icon-circle {
+            animation-delay: 2s;
+        }
+
+        .contact-item:nth-child(4) .icon-circle {
+            animation-delay: 3s;
+        }
+
+        .contact-item:nth-child(5) .icon-circle {
+            animation-delay: 4s;
+        }
+
+        .contact-item:nth-child(6) .icon-circle {
+            animation-delay: 5s;
+        }
+
+        @keyframes iconGlow {
+
+            0%,
+            20%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(124, 179, 66, 0);
+                border-color: var(--line);
+            }
+
+            10% {
+                box-shadow: 0 0 18px 2px rgba(124, 179, 66, .55);
+                border-color: var(--accent);
+            }
+        }
+
+        /* 6. Divider line with a light running across it */
+        .intro-content__contact {
+            position: relative;
+        }
+
+        .intro-content__contact::before {
+            content: "";
+            position: absolute;
+            top: -1px;
+            left: 0;
+            width: 120px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            animation: lineRun 5s linear infinite;
+        }
+
+        @keyframes lineRun {
+            0% {
+                left: 0;
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                left: calc(100% - 120px);
+                opacity: 0;
+            }
+        }
+
+        /* ===================================================
+           GSAP INTERACTIVE LAYER
+        =================================================== */
+
+        .cursor-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 420px;
+            height: 420px;
+            margin: -210px 0 0 -210px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(124, 179, 66, .22) 0%, rgba(124, 179, 66, 0) 65%);
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0;
+            mix-blend-mode: screen;
+        }
+
+        .cursor-dot {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 10px;
+            height: 10px;
+            margin: -5px 0 0 -5px;
+            border-radius: 50%;
+            background: var(--accent);
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0;
+        }
+
+        .intro-content__contact {
+            perspective: 900px;
+        }
+
+        .contact-item {
+            padding: 10px 14px;
+            border-radius: 14px;
+            border: 1px solid transparent;
+            transform-style: preserve-3d;
+            will-change: transform;
+            transition: background-color .3s, border-color .3s;
+        }
+
+        .contact-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-color: var(--line);
+        }
+
+        .intro-logo,
+        .intro-content__text {
+            will-change: transform;
+        }
+
+        @media (hover: none) {
+
+            .cursor-glow,
+            .cursor-dot {
+                display: none;
+            }
+        }
+
+        /* Respect users who turn off motion in their OS settings */
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+            }
+
+            html.anim .intro-logo,
+            html.anim .intro-content__text,
+            html.anim .contact-item {
+                visibility: visible;
+            }
+
+            .contact-item {
+                opacity: 1;
+            }
+
+            .intro-content__text h1 {
+                -webkit-text-fill-color: var(--text);
+            }
+        }
+
+        /* ===== MOBILE ===== */
         @media (max-width: 768px) {
-
-            .intro-content__contact {
-                grid-template-columns: 1fr;
-                gap: 8px;
-                /* padding: 0 20px; */
-                margin-top: 20px;
-            }
-
-            .intro-content__contact p {
-                font-size: 1.5rem;
-            }
-
-            .icon-circle {
-                width: 35px;
-                height: 35px;
-                font-size: 1.4rem;
-                margin-right: 12px;
+            .site-logo-img {
+                max-width: 100px;
             }
 
             .intro-logo {
-                margin-bottom: 10px;
+                margin-bottom: 14px;
+            }
+
+            .intro-content__contact {
+                grid-template-columns: 1fr;
+                gap: 18px;
+                max-width: 420px;
+                margin-top: 28px;
+                padding: 24px 16px 0;
+            }
+
+            .icon-circle {
+                width: 40px;
+                height: 40px;
+                font-size: 1.5rem;
+            }
+
+            .contact-value {
+                font-size: 1.5rem;
             }
         }
     </style>
@@ -166,24 +595,27 @@
     <!-- site header
     ================================================== -->
     <header class="">
+    </header>
 
+    <!-- video background + overlay
+    ================================================== -->
+    <div class="video-bg-wrap">
+        <video class="intro-video-bg" autoplay muted loop playsinline>
+            <source src="https://cdn.jsdelivr.net/gh/wp-akash/Exista-Promo-Video@main/Tailor.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay"></div>
+    </div>
 
-
-        <!-- <div class="header-email">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                <path
-                    d="M0 12l11 3.1 7-8.1-8.156 5.672-4.312-1.202 15.362-7.68-3.974 14.57-3.75-3.339-2.17 2.925v-.769l-2-.56v7.383l4.473-6.031 4.527 4.031 6-22z" />
-            </svg>
-            <a href="mailto:moonflower1234@gmail.com">moonflower1234@gmail.com</a>
-        </div> -->
-
-    </header> <!-- end s-header -->
+    <!-- custom cursor (GSAP)
+    ================================================== -->
+    <div class="cursor-glow"></div>
+    <div class="cursor-dot"></div>
 
     <!-- intro
     ================================================== -->
     <section id="intro" class="s-intro s-intro--particles">
 
-        <div id="particles-js" class="intro-particles"></div>
+        <!-- <div id="particles-js" class="intro-particles"></div> -->
 
         <div class="grid-overlay">
             <div></div>
@@ -192,72 +624,81 @@
         <div class="row intro-content">
 
             <div class="column">
+
                 <div class="intro-logo">
                     <a class="site-logo" href="http://www.moonflowertailoring.com">
                         <img src="images/moonflowertailoring.png" alt="Moon Flower Tailoring Logo"
                             class="site-logo-img">
                     </a>
                 </div>
+
                 <div class="intro-content__text">
-
-                    <h1>
-                        Moonflower Ladies Tailoring
-                    </h1>
-
-                    <h3 style="margin-top: 10px;">
-                        Website Launching Soon
-                    </h3>
-
-                    <!-- <h1>
-                        Get ready everyone. <br>
-                        We are currently <br>
-                        working on a super <br>
-                        awesome website.
-                    </h1> -->
-
-                </div> <!-- end intro-content__text -->
-
-                <div class="intro-content__contact" style="font-size: 1.8rem; line-height: 1.6; color: #ffffff;">
-                    <p style="margin-bottom: 15px;"><i class="fas fa-mobile-alt icon-circle"
-                            style="color: #ffffff;"></i> WhatsApp/Mobile: <a href="https://wa.me/971529382761"
-                            target="_blank"><strong> +971 52 938 2761</strong></a></p>
-                    <p style="margin-bottom: 15px;"><i class="fas fa-phone icon-circle" style="color: #ffffff;"></i>
-                        Phone:
-                        <strong> <a href="tel:+97143244767" target="_blank"><strong> +971 4 324
-                                    4767</strong></a></strong>
-                    </p>
-                    <p style="margin-bottom: 15px;"><i class="fas fa-map-marker-alt icon-circle"
-                            style="color: #ffffff;"></i> <strong>Address: Next to Regal, Champion Textiles
-                            Building,
-                            Satwa, Dubai - U.A.E.</strong></p>
-                    <p style="margin-bottom: 15px;"><i class="fas fa-envelope icon-circle" style="color: #ffffff;"></i>
-                        Email: <a href="mailto:moonflower1234@gmail.com"><strong>moonflower1234@gmail.com</strong></a>
-                    </p>
-                    <!-- <p style="margin-bottom: 15px;"><i class="fas fa-globe icon-circle" style="color: #ffffff;"></i>
-                        Website: <a href="http://www.moonflowertailoring.com"
-                            target="_blank"><strong>www.moonflowertailoring.com</strong></a></p> -->
-                    <p style="margin-bottom: 15px;"><i class="fab fa-instagram icon-circle" style="color: #ffffff;"></i>
-                        Instagram:
-                        <a href="https://www.instagram.com/moonflowertailoring/"
-                            target="_blank"><strong>moonflowertailoring</strong></a>
-                    </p>
-                    <p style="margin-bottom: 15px;"><i class="fab fa-facebook-f icon-circle"
-                            style="color: #ffffff;"></i> Facebook:
-                        <a href="https://www.facebook.com/moonflowertailoring/"
-                            target="_blank"><strong>moonflowertailoring</strong></a>
-                    </p>
+                    <h1>Moonflower Ladies Tailoring</h1>
+                    <h3><span class="h3-text">Website Launching Soon</span><span
+                            class="loading-dots"><span>.</span><span>.</span><span>.</span></span></h3>
                 </div>
+
+                <div class="intro-content__contact">
+
+                    <div class="contact-item">
+                        <i class="fas fa-mobile-alt icon-circle"></i>
+                        <div class="contact-text">
+                            <span class="contact-label">WhatsApp / Mobile</span>
+                            <a class="contact-value" href="https://wa.me/971529382761" target="_blank">+971 52 938
+                                2761</a>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <i class="fas fa-phone icon-circle"></i>
+                        <div class="contact-text">
+                            <span class="contact-label">Phone</span>
+                            <a class="contact-value" href="tel:+97143244767">+971 4 324 4767</a>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt icon-circle"></i>
+                        <div class="contact-text">
+                            <span class="contact-label">Address</span>
+                            <span class="contact-value">Next to Regal, Champion Textiles Building, Satwa, Dubai,
+                                U.A.E.</span>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <i class="fas fa-envelope icon-circle"></i>
+                        <div class="contact-text">
+                            <span class="contact-label">Email</span>
+                            <a class="contact-value" href="mailto:moonflower1234@gmail.com">moonflower1234@gmail.com</a>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <i class="fab fa-instagram icon-circle"></i>
+                        <div class="contact-text">
+                            <span class="contact-label">Instagram</span>
+                            <a class="contact-value" href="https://www.instagram.com/moonflowertailoring/"
+                                target="_blank">@moonflowertailoring</a>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <i class="fab fa-facebook-f icon-circle"></i>
+                        <div class="contact-text">
+                            <span class="contact-label">Facebook</span>
+                            <a class="contact-value" href="https://www.facebook.com/moonflowertailoring/"
+                                target="_blank">moonflowertailoring</a>
+                        </div>
+                    </div>
+
+                </div> <!-- end intro-content__contact -->
 
             </div> <!-- end column -->
 
-        </div> <!--  end intro-content -->
+        </div> <!-- end intro-content -->
 
-
-
-        </div> <!-- end column -->
-        </div> <!-- end row -->
-
-    </section> <!-- end s-info -->
+    </section>
 
     <!-- Java Script
     ================================================== -->
@@ -267,4 +708,205 @@
     <script src="js/particle-settings.js"></script>
     <script src="js/main.js"></script>
 
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+    <script>
+        (function () {
+            // If GSAP failed to load, just show everything
+            if (!window.gsap) {
+                document.documentElement.classList.remove('anim');
+                return;
+            }
+
+            var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            var canHover = window.matchMedia('(hover: hover)').matches;
+
+            /* ---------- helper: split text into letters ---------- */
+            function splitChars(el) {
+                var original = el.innerHTML;
+                var text = el.textContent.replace(/\s+/g, ' ').trim();
+                var chars = [];
+
+                el.setAttribute('aria-label', text);
+                el.innerHTML = '';
+
+                text.split(' ').forEach(function (word, i, arr) {
+                    var w = document.createElement('span');
+                    w.className = 'split-word';
+                    w.setAttribute('aria-hidden', 'true');
+                    Array.from(word).forEach(function (c) {
+                        var s = document.createElement('span');
+                        s.className = 'split-char';
+                        s.textContent = c;
+                        w.appendChild(s);
+                        chars.push(s);
+                    });
+                    el.appendChild(w);
+                    if (i < arr.length - 1) el.appendChild(document.createTextNode(' '));
+                });
+
+                return {
+                    chars: chars,
+                    revert: function () {
+                        el.innerHTML = original;
+                        el.removeAttribute('aria-label');
+                    }
+                };
+            }
+
+            var hidden = ['.intro-logo', '.intro-content__text', '.contact-item'];
+
+            if (reduceMotion) {
+                gsap.set(hidden, { autoAlpha: 1 });
+                return;
+            }
+
+            /* ---------- split all text ---------- */
+            var h1 = document.querySelector('.intro-content__text h1');
+            var h3Text = document.querySelector('.h3-text');
+            h1.classList.add('is-splitting');
+            var h1Split = splitChars(h1);
+            var h3Split = splitChars(h3Text);
+
+            var items = gsap.utils.toArray('.contact-item');
+            var labelSplits = items.map(function (item) {
+                return splitChars(item.querySelector('.contact-label'));
+            });
+
+            /* ---------- entrance timeline ---------- */
+            var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+            tl.set(hidden, { autoAlpha: 1 })
+
+                // logo pops in
+                .from('.intro-logo', {
+                    autoAlpha: 0, scale: 0.6, y: 30,
+                    duration: 1.1, ease: 'back.out(1.7)'
+                })
+
+                // title: letters flip up out of a blur
+                .addLabel('title', '-=0.55')
+                .from(h1Split.chars, {
+                    autoAlpha: 0,
+                    yPercent: 110,
+                    rotateX: -85,
+                    filter: 'blur(10px)',
+                    transformOrigin: '50% 100%',
+                    duration: 0.9,
+                    stagger: 0.035
+                }, 'title')
+                // hand back to the shimmer once letters land
+                .call(function () {
+                    h1Split.revert();
+                    h1.classList.remove('is-splitting');
+                })
+
+                // subtitle: letters rise one by one
+                .from(h3Split.chars, {
+                    autoAlpha: 0, y: 18,
+                    duration: 0.6, stagger: 0.03
+                }, 'title+=0.75')
+                .from('.loading-dots', { autoAlpha: 0, x: -6, duration: 0.4 }, '>-0.1')
+
+                // divider line fades in
+                .fromTo('.intro-content__contact',
+                    { borderTopColor: 'rgba(255,255,255,0)' },
+                    { borderTopColor: 'rgba(255,255,255,0.18)', duration: 0.8, ease: 'power1.out' },
+                    '>-0.2')
+                .addLabel('contacts', '<');
+
+            // each contact card: card -> icon -> label letters -> value wipe
+            items.forEach(function (item, i) {
+                var at = 'contacts+=' + (i * 0.12);
+                tl.from(item, { autoAlpha: 0, y: 30, duration: 0.8 }, at)
+                    .from(item.querySelector('.icon-circle'), {
+                        scale: 0, rotate: -120, duration: 0.7, ease: 'back.out(2)'
+                    }, at)
+                    .from(labelSplits[i].chars, {
+                        autoAlpha: 0, x: -8, duration: 0.4, stagger: 0.02
+                    }, at + '+=0.15')
+                    .fromTo(item.querySelector('.contact-value'),
+                        { clipPath: 'inset(0 100% 0 0)', x: -10 },
+                        { clipPath: 'inset(0 0% 0 0)', x: 0, duration: 0.9, ease: 'power2.inOut' },
+                        at + '+=0.3');
+            });
+
+            // start after the template's preloader fades out
+            function start() { gsap.delayedCall(0.9, function () { tl.play(); }); }
+            if (document.readyState === 'complete') start();
+            else window.addEventListener('load', start);
+
+            /* ---------- hover: label letters do a little wave ---------- */
+            items.forEach(function (item, i) {
+                item.addEventListener('mouseenter', function () {
+                    if (tl.isActive()) return;
+                    gsap.fromTo(labelSplits[i].chars,
+                        { y: 0 },
+                        { y: -5, duration: 0.18, stagger: 0.02, yoyo: true, repeat: 1, ease: 'sine.inOut', overwrite: true });
+                    gsap.to(item.querySelector('.contact-value'), { x: 4, duration: 0.3, ease: 'power2.out' });
+                });
+                item.addEventListener('mouseleave', function () {
+                    gsap.to(item.querySelector('.contact-value'), { x: 0, duration: 0.4, ease: 'power2.out' });
+                });
+            });
+
+            if (!canHover) return; // the rest is mouse-only
+
+            /* ---------- cursor glow + dot ---------- */
+            var glowX = gsap.quickTo('.cursor-glow', 'x', { duration: 0.8, ease: 'power3' });
+            var glowY = gsap.quickTo('.cursor-glow', 'y', { duration: 0.8, ease: 'power3' });
+            var dotX = gsap.quickTo('.cursor-dot', 'x', { duration: 0.15, ease: 'power3' });
+            var dotY = gsap.quickTo('.cursor-dot', 'y', { duration: 0.15, ease: 'power3' });
+
+            /* ---------- soft parallax on logo + headline ---------- */
+            var logoX = gsap.quickTo('.intro-logo', 'x', { duration: 1.2, ease: 'power3' });
+            var logoY = gsap.quickTo('.intro-logo', 'y', { duration: 1.2, ease: 'power3' });
+            var textX = gsap.quickTo('.intro-content__text', 'x', { duration: 1.4, ease: 'power3' });
+            var textY = gsap.quickTo('.intro-content__text', 'y', { duration: 1.4, ease: 'power3' });
+
+            var cursorShown = false;
+            window.addEventListener('mousemove', function (e) {
+                if (!cursorShown) {
+                    gsap.to(['.cursor-glow', '.cursor-dot'], { opacity: 1, duration: 0.5 });
+                    cursorShown = true;
+                }
+                glowX(e.clientX); glowY(e.clientY);
+                dotX(e.clientX); dotY(e.clientY);
+
+                var nx = e.clientX / window.innerWidth - 0.5;
+                var ny = e.clientY / window.innerHeight - 0.5;
+                logoX(nx * 18); logoY(ny * 18);
+                textX(nx * 10); textY(ny * 10);
+            });
+
+            document.addEventListener('mouseleave', function () {
+                gsap.to(['.cursor-glow', '.cursor-dot'], { opacity: 0, duration: 0.4 });
+                cursorShown = false;
+            });
+
+            // dot grows over links
+            gsap.utils.toArray('a').forEach(function (a) {
+                a.addEventListener('mouseenter', function () { gsap.to('.cursor-dot', { scale: 2.6, opacity: 0.6, duration: 0.3 }); });
+                a.addEventListener('mouseleave', function () { gsap.to('.cursor-dot', { scale: 1, opacity: 1, duration: 0.3 }); });
+            });
+
+            /* ---------- 3D tilt on contact cards ---------- */
+            items.forEach(function (item) {
+                var rx = gsap.quickTo(item, 'rotationX', { duration: 0.5, ease: 'power3' });
+                var ry = gsap.quickTo(item, 'rotationY', { duration: 0.5, ease: 'power3' });
+                item.addEventListener('mousemove', function (e) {
+                    var r = item.getBoundingClientRect();
+                    var px = (e.clientX - r.left) / r.width - 0.5;
+                    var py = (e.clientY - r.top) / r.height - 0.5;
+                    ry(px * 12);
+                    rx(-py * 12);
+                });
+                item.addEventListener('mouseleave', function () { rx(0); ry(0); });
+            });
+        })();
+    </script>
+
 </body>
+
+</html>

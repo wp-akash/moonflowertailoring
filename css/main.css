@@ -1690,6 +1690,120 @@ input::-moz-focus-inner {
   background-color: transparent;
 }
 
+/* -------------------------------------------------------------------
+ * ## intro video background
+ * ------------------------------------------------------------------- */
+.s-intro--video {
+  background-color: #000;
+}
+
+.intro-video-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  z-index: 0;
+}
+
+.intro-video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.55) 0%,
+    rgba(0, 0, 0, 0.45) 60%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+  z-index: 1;
+}
+
+.s-intro--video .intro-particles,
+.s-intro--video .grid-overlay,
+.s-intro--video .intro-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* -------------------------------------------------------------------
+ * ## intro video — center alignment
+ * ------------------------------------------------------------------- */
+
+/* Make the section itself a full-screen flex container */
+.s-intro--video {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+/* Override framework .row and .column so they don't offset content */
+.s-intro--video .row.intro-content {
+  width: 100%;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.s-intro--video .row.intro-content > .column {
+  width: 100% !important;
+  max-width: 100% !important;
+  -webkit-flex: 0 0 100%;
+  flex: 0 0 100%;
+  padding-left: 0;
+  padding-right: 0;
+  text-align: center;
+}
+
+.s-intro--video .intro-logo {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.s-intro--video .intro-content__text {
+  text-align: center;
+  width: 100%;
+}
+
+.s-intro--video .intro-content__text h1,
+.s-intro--video .intro-content__text h3 {
+  text-align: center;
+}
+
+.s-intro--video .intro-content__contact {
+  text-align: center;
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.s-intro--video .intro-content__contact p {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  gap: .6rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 
 /* -------------------------------------------------------------------
  * ## intro slides
