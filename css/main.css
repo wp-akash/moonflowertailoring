@@ -1716,12 +1716,10 @@ input::-moz-focus-inner {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.55) 0%,
-    rgba(0, 0, 0, 0.45) 60%,
-    rgba(0, 0, 0, 0.7) 100%
-  );
+  background: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0.55) 0%,
+      rgba(0, 0, 0, 0.45) 60%,
+      rgba(0, 0, 0, 0.7) 100%);
   z-index: 1;
 }
 
@@ -1758,7 +1756,7 @@ input::-moz-focus-inner {
   z-index: 2;
 }
 
-.s-intro--video .row.intro-content > .column {
+.s-intro--video .row.intro-content>.column {
   width: 100% !important;
   max-width: 100% !important;
   -webkit-flex: 0 0 100%;
@@ -1966,13 +1964,13 @@ input::-moz-focus-inner {
   display: inline-block;
   font-family: "Gothic A1", sans-serif;
   font-weight: 400;
-  font-size: 2rem;
-  line-height: 2rem;
+  font-size: 4rem;
+  line-height: 4rem;
   /* text-transform: uppercase; */
   letter-spacing: .3em;
   color: #8dc63f;
   padding-left: .6rem;
-  margin-top: 0;
+  margin-top: 10px;
   margin-bottom: .8rem;
   position: relative;
 }
@@ -1991,7 +1989,7 @@ input::-moz-focus-inner {
 .intro-content__text h1 {
   font-family: "DM Serif Display", serif;
   font-weight: 400;
-  font-size: 5rem;
+  font-size: 4.5rem;
   line-height: 1.2;
   color: #ffffff;
   letter-spacing: normal;
@@ -2605,7 +2603,7 @@ html.no-csstransitions .intro-content__bottom {
   }
 
   .intro-content__text h3 {
-    font-size: 1.5rem;
+    font-size: 2.5rem;
   }
 
   .intro-content__text h1 {
